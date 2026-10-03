@@ -17,9 +17,26 @@ Fecha: 3 de octubre de 2026.
 
 ## Aún no verificado
 
-- Migración SQL en PostgreSQL/Supabase, suite de aislamiento real, autenticación y persistencia remota: requieren proyecto conectado.
+- Autenticación y persistencia con usuarios reales: requiere alta de administradoras.
 - Importación de los 1.605 registros reales: archivo no disponible.
 - Publicación web: alojamiento pendiente. El código ya está en GitHub (ctn1470/CORE-Equestrian), separado de Mercado Casa.
 - Registro en menos de 20 segundos por Mariana/Cristina en una jornada real: requiere prueba del piloto.
 
 No considerar esta entrega como producción habilitada hasta completar esos puntos.
+
+## Supabase conectado
+
+- Proyecto independiente CORE-Equestrian: crcriztfrcgzoxikeqbs.
+- Esquema instalado mediante SQL Editor, con respuesta Success.
+- Suite isolation.sql ejecutada sin errores, rollback incluido.
+- Verificación: 10 tablas públicas, todas con RLS; 0 funciones SECURITY DEFINER públicas.
+- Organizaciones, histórico y usuarios después de las pruebas: 0 / 0 / 0.
+- Admin Cristina: correo confirmado por el usuario; Mariana pendiente.
+- No se modificó Mercado Casa ni se activaron planes de pago.
+
+- Suite SQL repetida después de aplicar advisor-improvements.sql: pasó.
+- Invitación a Cristina enviada por Supabase y membresía admin configurada en MA Dressage.
+- App local conectada con clave publicable; pantalla de login visible.
+- 18 pruebas locales pasan, incluidas activación de invitación y envío de actualización de contraseña mediante PUT.
+- Login real, creación de contraseña por Cristina y persistencia operativa aún pendientes.
+- Advertencia del asesor: protección de contraseñas filtradas requiere Pro; no se activó pago. Índices nuevos todavía sin uso.

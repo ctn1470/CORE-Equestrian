@@ -4,9 +4,9 @@ Web app móvil para Agenda → Ejecución → Historial, directorio/ficha del ca
 
 ## Estado real de esta entrega
 
-- La app se ejecuta localmente con datos de demostración claramente identificados. Las modificaciones de demostración están en memoria y se reinician al recargar.
-- El código del piloto está guardado en https://github.com/ctn1470/CORE-Equestrian, independiente de Mercado Casa. El cliente de Supabase y la migración están escritos; el proyecto Supabase nuevo espera la creación de su contraseña por el usuario.
-- La migración y las políticas requieren ejecución y pruebas en el proyecto nuevo antes de uso real. Las pruebas locales no acreditan por sí solas el aislamiento en PostgreSQL.
+- La app local está conectada al proyecto Supabase de CORE. Al vaciar public/config.js se activa la demostración en memoria, claramente identificada y sin persistencia.
+- El código del piloto está guardado en https://github.com/ctn1470/CORE-Equestrian, independiente de Mercado Casa. El cliente de Supabase y la migración están escritos; el proyecto Supabase nuevo CORE-Equestrian está creado (crcriztfrcgzoxikeqbs), con el esquema instalado.
+- La migración y la suite SQL de aislamiento se ejecutaron correctamente en el proyecto nuevo. Las 10 tablas tienen RLS; ninguna función privilegiada está en el esquema público. Login y persistencia de usuarios reales siguen pendientes.
 - Los 1.605 registros depurados y el modelo original no están disponibles en los archivos del proyecto ni como adjuntos en la conversación recuperada. El importador está preparado; no se inventaron ni importaron registros de WhatsApp.
 - El sitio anterior permanece intacto. `sources/` permanece como referencia de solo lectura.
 
@@ -34,14 +34,14 @@ Interfaz web con módulos JavaScript estándar, HTML semántico, CSS responsive 
 ## Conectar Supabase nuevo
 
 1. Crear un proyecto nuevo dedicado a CORE Equestrian. No aplicar el SQL en Mercado Casa.
-2. Aplicar `supabase/migrations/202610030001_core.sql` una vez. Guardar versiones posteriores como migraciones nuevas.
-3. Invitar a las administradoras desde Supabase Auth. Confirmar sus correos e identidades reales.
-4. Sustituir los dos correos de ejemplo en `supabase/bootstrap.sql` y ejecutarlo. Crea MA Dressage, las personas del equipo y sus dos membresías administrativas. No crea caballos con información inventada.
+2. Aplicar `supabase/migrations/202610030001_core.sql` una vez; después aplicar supabase/advisor-improvements.sql. El proyecto crcriztfrcgzoxikeqbs ya tiene ambos aplicados: no repetir la instalación. Guardar versiones posteriores como migraciones nuevas.
+3. Cristina tiene invitación enviada y membresía admin en MA Dressage. Mariana espera correo confirmado.
+4. El proyecto actual ya tiene MA Dressage, siete personas y la membresía de Cristina. No ejecutar bootstrap.sql aquí. Ese archivo es una plantilla para una instalación nueva con ambas identidades confirmadas. Mariana se añadirá cuando exista su cuenta real. No se han creado caballos ficticios.
 5. Configurar `SUPABASE_URL` y `SUPABASE_PUBLISHABLE_KEY` como variables del repositorio o del alojamiento. Solo usar clave pública publishable/anon; nunca service_role ni sb_secret en la interfaz.
 6. Ejecutar el build; `dist/config.js` contiene únicamente esos valores públicos. Para desarrollo real, configurar los mismos valores en `public/config.js`; el ejemplo no contiene secretos.
 7. Probar login, persistencia tras recarga, permisos y el aislamiento con la suite SQL incluida. No habilitar usuarios reales adicionales antes de verificar estos controles.
 
-La sesión de autenticación se mantiene en sessionStorage y se renueva. Los datos operativos reales se almacenan exclusivamente en Supabase; el navegador no es su fuente de verdad. El alta/invitación y recuperación de cuentas se gestiona inicialmente desde Supabase Auth. No hay alta pública de clientes en el piloto.
+La sesión de autenticación se mantiene en sessionStorage y se renueva. Los datos operativos reales se almacenan exclusivamente en Supabase; el navegador no es su fuente de verdad. El alta/invitación y recuperación se gestiona desde Supabase Auth; la app acepta invitaciones y permite definir contraseña sin guardar la contraseña en el navegador. No hay alta pública de clientes en el piloto.
 
 ## Organizaciones y roles
 
@@ -99,10 +99,12 @@ La cuenta existente del usuario puede ser la misma; los recursos de CORE deben s
 
 El usuario exige planes gratuitos. Antes de crear el proyecto se debe comprobar que queda capacidad en su cuota Free de Supabase (máximo dos proyectos activos según la página oficial consultada el 3 de octubre de 2026: https://supabase.com/pricing ). Si no queda capacidad, detener la creación; no pausar ni eliminar proyectos ajenos, no activar pago y no crear organizaciones para eludir la cuota. Revisar también cuotas/cargos de GitHub Actions antes de activar los flujos remotos. No contratar dominios ni planes adicionales.
 
-Estado de acceso al 3 de octubre de 2026: sesiones de GitHub y Supabase abiertas. Repositorio CORE-Equestrian disponible. Organización CTN en plan Free con un proyecto existente, Mercado-Casa; hay capacidad para un segundo proyecto. La creación de CORE-Equestrian está preparada y espera que el usuario complete personalmente la contraseña y el envío del formulario. No se han activado servicios de pago.
+Estado de acceso al 3 de octubre de 2026: sesiones de GitHub y Supabase abiertas. Repositorio CORE-Equestrian disponible. Organización CTN en plan Free con un proyecto existente, Mercado-Casa; hay capacidad para un segundo proyecto. CORE-Equestrian está creado en Supabase y el esquema se aplicó mediante SQL Editor. Los datos de prueba se revirtieron. Después se creó MA Dressage con Cristina como administradora; su invitación está enviada. No se han activado servicios de pago.
 
 ## Pendientes para cerrar el piloto real
 
-Completar el proyecto Supabase nuevo, aplicar y verificar el esquema, confirmar correos de administradoras, cargar fichas verificadas, recuperar/importar el histórico y medir el registro de ejecución con el equipo. La interfaz requiere pocos toques, pero el objetivo de 20 segundos necesita validación con personas reales.
+Crear los accesos administrativos y validar autenticación/persistencia, confirmar correos de administradoras, cargar fichas verificadas, recuperar/importar el histórico y medir el registro de ejecución con el equipo. La interfaz requiere pocos toques, pero el objetivo de 20 segundos necesita validación con personas reales.
 
 Funciones comerciales pospuestas: suscripciones, cobros, registro autónomo de organizaciones y personalización de catálogos. Esta V1 no promete escala ilimitada ni reemplaza historia clínica veterinaria.
+
+La dirección de activación es provisional: http://127.0.0.1:4173, en esta computadora. Antes de abrir acceso remoto se debe publicar CORE en alojamiento adecuado y sustituir Site URL en Supabase. Mercado Casa usa GitHub Pages. El asesor ya no muestra advertencias de rendimiento RLS ni claves foráneas sin índice; quedan índices aún sin uso en esta base nueva y la protección de contraseñas filtradas, reservada al plan Pro. Se mantiene Free, con mínimo de contraseña 12 caracteres.
