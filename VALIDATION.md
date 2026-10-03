@@ -19,7 +19,7 @@ Fecha: 3 de octubre de 2026.
 
 - Migración SQL en PostgreSQL/Supabase, suite de aislamiento real, autenticación y persistencia remota: requieren proyecto conectado.
 - Importación de los 1.605 registros reales: archivo no disponible.
-- Publicación en GitHub/alojamiento: conexiones no habilitadas.
+- Publicación web: alojamiento pendiente. El código ya está en GitHub (ctn1470/CORE-Equestrian), separado de Mercado Casa.
 - Registro en menos de 20 segundos por Mariana/Cristina en una jornada real: requiere prueba del piloto.
 
 No considerar esta entrega como producción habilitada hasta completar esos puntos.

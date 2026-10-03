@@ -5,7 +5,7 @@ Web app móvil para Agenda → Ejecución → Historial, directorio/ficha del ca
 ## Estado real de esta entrega
 
 - La app se ejecuta localmente con datos de demostración claramente identificados. Las modificaciones de demostración están en memoria y se reinician al recargar.
-- El cliente de Supabase, la migración y el flujo de publicación están escritos. No se ha creado un repositorio remoto ni un proyecto Supabase porque sus conexiones aún no están habilitadas.
+- El código del piloto está guardado en https://github.com/ctn1470/CORE-Equestrian, independiente de Mercado Casa. El cliente de Supabase y la migración están escritos; el proyecto Supabase nuevo espera la creación de su contraseña por el usuario.
 - La migración y las políticas requieren ejecución y pruebas en el proyecto nuevo antes de uso real. Las pruebas locales no acreditan por sí solas el aislamiento en PostgreSQL.
 - Los 1.605 registros depurados y el modelo original no están disponibles en los archivos del proyecto ni como adjuntos en la conversación recuperada. El importador está preparado; no se inventaron ni importaron registros de WhatsApp.
 - El sitio anterior permanece intacto. `sources/` permanece como referencia de solo lectura.
@@ -91,7 +91,7 @@ No deducir `done` por existir una programación en WhatsApp. Las clases inferida
 
 ## Publicación
 
-GitHub almacena el código en un repositorio independiente. El flujo manual `package.yml` prepara un archivo de publicación sin desplegar ni contratar servicios; usa las dos variables públicas de Supabase. El alojamiento se elegirá después de comprobar la configuración de Mercado Casa y sus límites gratuitos, creando un sitio separado para CORE. GitHub Pages no se utiliza como destino porque limita el uso para productos comerciales SaaS y desaconseja transacciones sensibles como contraseñas: https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits . No están activados repositorio, publicación o cuentas desde este entorno.
+GitHub almacena el código en un repositorio independiente. El flujo manual `package.yml` prepara un archivo de publicación sin desplegar ni contratar servicios; usa las dos variables públicas de Supabase. El alojamiento se elegirá después de comprobar la configuración de Mercado Casa y sus límites gratuitos, creando un sitio separado para CORE. GitHub Pages no se utiliza como destino porque limita el uso para productos comerciales SaaS y desaconseja transacciones sensibles como contraseñas: https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits . El repositorio está creado; la publicación web y las cuentas de la app todavía están pendientes.
 
 ## Separación y coste
 
@@ -99,10 +99,10 @@ La cuenta existente del usuario puede ser la misma; los recursos de CORE deben s
 
 El usuario exige planes gratuitos. Antes de crear el proyecto se debe comprobar que queda capacidad en su cuota Free de Supabase (máximo dos proyectos activos según la página oficial consultada el 3 de octubre de 2026: https://supabase.com/pricing ). Si no queda capacidad, detener la creación; no pausar ni eliminar proyectos ajenos, no activar pago y no crear organizaciones para eludir la cuota. Revisar también cuotas/cargos de GitHub Actions antes de activar los flujos remotos. No contratar dominios ni planes adicionales.
 
-Estado de acceso al 3 de octubre de 2026: las integraciones aparecen instaladas, pero sus herramientas no están expuestas en esta sesión. Se abrieron los paneles de GitHub y Supabase; ambos requieren iniciar sesión. No se ha comprobado aún la cantidad de proyectos activos del usuario ni creado recursos remotos.
+Estado de acceso al 3 de octubre de 2026: sesiones de GitHub y Supabase abiertas. Repositorio CORE-Equestrian disponible. Organización CTN en plan Free con un proyecto existente, Mercado-Casa; hay capacidad para un segundo proyecto. La creación de CORE-Equestrian está preparada y espera que el usuario complete personalmente la contraseña y el envío del formulario. No se han activado servicios de pago.
 
 ## Pendientes para cerrar el piloto real
 
-Conectar GitHub/Supabase, crear recursos nuevos, aplicar y verificar el esquema, confirmar correos de administradoras, cargar fichas verificadas, recuperar/importar el histórico y medir el registro de ejecución con el equipo. La interfaz requiere pocos toques, pero el objetivo de 20 segundos necesita validación con personas reales.
+Completar el proyecto Supabase nuevo, aplicar y verificar el esquema, confirmar correos de administradoras, cargar fichas verificadas, recuperar/importar el histórico y medir el registro de ejecución con el equipo. La interfaz requiere pocos toques, pero el objetivo de 20 segundos necesita validación con personas reales.
 
 Funciones comerciales pospuestas: suscripciones, cobros, registro autónomo de organizaciones y personalización de catálogos. Esta V1 no promete escala ilimitada ni reemplaza historia clínica veterinaria.
