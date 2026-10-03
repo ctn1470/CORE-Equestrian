@@ -91,7 +91,7 @@ No deducir `done` por existir una programación en WhatsApp. Las clases inferida
 
 ## Publicación
 
-GitHub almacena el código en un repositorio independiente. El flujo manual `package.yml` prepara un archivo de publicación sin desplegar ni contratar servicios; usa las dos variables públicas de Supabase. El alojamiento se elegirá después de comprobar la configuración de Mercado Casa y sus límites gratuitos, creando un sitio separado para CORE. GitHub Pages no se utiliza como destino porque limita el uso para productos comerciales SaaS y desaconseja transacciones sensibles como contraseñas: https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits . El repositorio está creado; la publicación web y las cuentas de la app todavía están pendientes.
+El piloto MA Dressage se publica en https://ctn1470.github.io/CORE-Equestrian/ por solicitud explícita del usuario. El flujo pages.yml ejecuta las pruebas y publica exclusivamente public/ en GitHub Pages al actualizar la rama main. El repositorio y el proyecto Supabase son independientes de Mercado Casa. No hay cobros ni contratación de planes. Antes de comercializar el producto se revisarán los límites de GitHub Pages y se migrará el alojamiento según necesidad.
 
 ## Separación y coste
 
@@ -107,4 +107,4 @@ Crear los accesos administrativos y validar autenticación/persistencia, confirm
 
 Funciones comerciales pospuestas: suscripciones, cobros, registro autónomo de organizaciones y personalización de catálogos. Esta V1 no promete escala ilimitada ni reemplaza historia clínica veterinaria.
 
-La dirección de activación es provisional: http://127.0.0.1:4173, en esta computadora. Antes de abrir acceso remoto se debe publicar CORE en alojamiento adecuado y sustituir Site URL en Supabase. Mercado Casa usa GitHub Pages. El asesor ya no muestra advertencias de rendimiento RLS ni claves foráneas sin índice; quedan índices aún sin uso en esta base nueva y la protección de contraseñas filtradas, reservada al plan Pro. Se mantiene Free, con mínimo de contraseña 12 caracteres.
+La dirección de activación remota es https://ctn1470.github.io/CORE-Equestrian/ y Site URL en Supabase apunta allí. El asesor ya no muestra advertencias de rendimiento RLS ni claves foráneas sin índice; quedan índices aún sin uso en esta base nueva y la protección de contraseñas filtradas, reservada al plan Pro. Se mantiene Free, con mínimo de contraseña 12 caracteres.

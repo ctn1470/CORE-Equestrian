@@ -19,7 +19,7 @@ Fecha: 3 de octubre de 2026.
 
 - Autenticación y persistencia con usuarios reales: requiere alta de administradoras.
 - Importación de los 1.605 registros reales: archivo no disponible.
-- Publicación web: alojamiento pendiente. El código ya está en GitHub (ctn1470/CORE-Equestrian), separado de Mercado Casa.
+- Publicación web: completada en GitHub Pages para el piloto por petición explícita del usuario.
 - Registro en menos de 20 segundos por Mariana/Cristina en una jornada real: requiere prueba del piloto.
 
 No considerar esta entrega como producción habilitada hasta completar esos puntos.
@@ -40,3 +40,12 @@ No considerar esta entrega como producción habilitada hasta completar esos punt
 - 18 pruebas locales pasan, incluidas activación de invitación y envío de actualización de contraseña mediante PUT.
 - Login real, creación de contraseña por Cristina y persistencia operativa aún pendientes.
 - Advertencia del asesor: protección de contraseñas filtradas requiere Pro; no se activó pago. Índices nuevos todavía sin uso.
+
+## Publicación GitHub Pages
+
+- URL: https://ctn1470.github.io/CORE-Equestrian/
+- Flujo Publish CORE pilot: ejecución 37155676972, Success, 26 segundos.
+- Fuente: únicamente public/, con clave publicable de CORE. SQL, tests y archivos históricos no forman parte del sitio.
+- Pantalla publicada de ingreso comprobada en navegador.
+- Site URL de Supabase cambiada a la URL HTTPS publicada.
+- Ingreso con contraseña real y persistencia operativa continúan pendientes de activación por Cristina.
