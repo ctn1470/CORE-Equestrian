@@ -1,0 +1,24 @@
+-- Aplicar después de 202610030001_core.sql. Ajustes sin modificar datos.
+begin;
+alter policy member_read on public.memberships using(user_id=(select auth.uid()) or core_private.is_org_admin(organization_id));
+alter policy access_read on public.horse_access using(user_id=(select auth.uid()) or core_private.is_org_admin(organization_id));
+alter policy activity_insert on public.activities with check(core_private.is_org_admin(organization_id) and created_by=(select auth.uid()));
+alter policy execution_read on public.executions using(exists(select 1 from public.activities a where a.id=activity_id and a.organization_id=executions.organization_id and (core_private.is_org_admin(a.organization_id) or exists(select 1 from public.memberships m where m.user_id=(select auth.uid()) and m.organization_id=a.organization_id and m.role='operations') or core_private.can_read_history(a.organization_id,a.horse_id))));
+alter policy execution_insert on public.executions with check(core_private.is_org_admin(organization_id) and created_by=(select auth.uid()));
+alter policy health_insert on public.horse_health with check(core_private.is_org_admin(organization_id) and created_by=(select auth.uid()));
+create index if not exists activities_author on public.activities(created_by);
+create index if not exists activities_person on public.activities(organization_id,person_id);
+create index if not exists activities_trainer on public.activities(organization_id,trainer_id);
+create index if not exists revisions_activity on public.activity_revisions(organization_id,activity_id);
+create index if not exists revisions_author on public.activity_revisions(changed_by);
+create index if not exists executions_activity on public.executions(organization_id,activity_id);
+create index if not exists executions_author on public.executions(created_by);
+create index if not exists executions_person on public.executions(organization_id,person_id);
+create index if not exists executions_trainer on public.executions(organization_id,trainer_id);
+create index if not exists historical_author on public.historical_records(imported_by);
+create index if not exists historical_person on public.historical_records(organization_id,person_id);
+create index if not exists historical_trainer on public.historical_records(organization_id,trainer_id);
+create index if not exists access_horse on public.horse_access(organization_id,horse_id);
+create index if not exists health_author on public.horse_health(created_by);
+create index if not exists memberships_person on public.memberships(organization_id,person_id);
+commit;
