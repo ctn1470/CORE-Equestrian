@@ -1,4 +1,5 @@
 export const ACTIVITIES = ['Clase','Trabajo','Paseo','Cuerda','Caminador','Potrero','Caminar de tiro','Veterinario','Recuperación'];
+export const HISTORICAL_ACTIVITIES = [...ACTIVITIES,'Caminar','Clínica','Odontología','Fisio','Concurso','D/nto'];
 export const TEAM = ['Mariana','Cristina','Tata','Juan','Antonia','Alicia','Palafrenero'];
 export const OPERATIONAL = ['Caminador','Potrero','Caminar de tiro','Veterinario','Recuperación'];
 export function normalizeActivity(value) {
@@ -33,7 +34,13 @@ export function validateExecution(data) {
 export function isChanged(plan, execution) {return execution?.outcome==='done'&&(plan.activity!==execution.activity||plan.person_id!==execution.person_id||(plan.trainer_id??null)!==(execution.trainer_id??null));}
 export function historyRows(data) {
   const plans=new Map(data.activities.map(a=>[a.id,a]));
-  return [...data.executions.map(e=>{const p=plans.get(e.activity_id);return p?{...p,...e,id:e.id,plan:p,source:'CORE Equestrian',date:e.executed_date??p.date}:null;}).filter(Boolean),...data.history.map(h=>({...h,source:'Histórico WhatsApp',readonly:true}))].sort((a,b)=>b.date.localeCompare(a.date));
+  return [...data.executions.map(e=>{const p=plans.get(e.activity_id);return p?{...p,...e,id:e.id,plan:p,source:'CORE Equestrian',date:e.executed_date??p.date}:null;}).filter(Boolean),...data.history.map(h=>({...h,source:h.source_system==='Excel MA Dressage'?'Histórico Excel Cristina':'Histórico WhatsApp',readonly:true}))].sort((a,b)=>b.date.localeCompare(a.date));
+}
+export function historicalAgenda(data,date){
+  const superseded=new Set(data.history.flatMap(r=>r.revision_keys||[]));
+  const scheduled=new Set(data.activities.map(r=>r.historical_source_key).filter(Boolean));
+  const confirmed=new Set(data.history.filter(r=>r.outcome==='done').map(r=>`${r.date}|${r.horse_id}`));
+  return data.history.filter(r=>r.date===date&&r.outcome==='unknown'&&!superseded.has(r.source_key)&&!scheduled.has(r.source_key)).map(r=>({...r,hasConfirmedExecution:confirmed.has(`${r.date}|${r.horse_id}`)}));
 }
 export function periodStats(data,from,to) {
   const plans=data.activities.filter(p=>p.date>=from&&p.date<=to),ids=new Set(plans.map(p=>p.id));
@@ -43,15 +50,19 @@ export function periodStats(data,from,to) {
   const real=historyRows(data).filter(e=>e.date>=from&&e.date<=to&&e.outcome==='done');
   return {plans:plans.length,done:done.length,notDone:executions.filter(e=>e.outcome==='not_done').length,pending:plans.length-executions.length,modified,percent:plans.length?Math.round(done.length/plans.length*100):null,real};
 }
-export function validateImport(rows,expected=1605) {
-  if(!Array.isArray(rows)||rows.length!==expected)throw new Error(`Se esperan ${expected} registros; recibidos ${rows?.length??0}.`);
+export function validateImport(rows,expected=null) {
+  if(!Array.isArray(rows)||!rows.length||rows.length>5000||(expected!==null&&rows.length!==expected))throw new Error(expected===null?'Importa entre 1 y 5.000 registros por archivo.':`Se esperan ${expected} registros; recibidos ${rows?.length??0}.`);
   const keys=new Set();
   return rows.map((r,i)=>{
-    if(!r.source_key||keys.has(r.source_key))throw new Error(`Fila ${i+1}: identificador de origen vacío o duplicado.`);keys.add(r.source_key);
-    if(!r.horse_id||!r.date||!r.raw_text)throw new Error(`Fila ${i+1}: faltan caballo, fecha o texto original.`);
-    const activity=normalizeActivity(r.activity);if(!ACTIVITIES.includes(activity))throw new Error(`Fila ${i+1}: actividad no reconocida.`);
+    if(typeof r.source_key!=='string'||!r.source_key.trim()||keys.has(r.source_key))throw new Error(`Fila ${i+1}: identificador de origen vacío o duplicado.`);keys.add(r.source_key);
+    if((!r.horse_id&&!r.horse_name?.trim())||!r.date||typeof r.raw_text!=='string'||!r.raw_text.trim())throw new Error(`Fila ${i+1}: faltan caballo, fecha o texto original.`);
+    const activity=r.activity==null||r.activity===''?null:r.activity;if(activity!==null&&!HISTORICAL_ACTIVITIES.includes(activity))throw new Error(`Fila ${i+1}: actividad no reconocida.`);
     if(!['done','not_done','unknown'].includes(r.outcome??'unknown'))throw new Error(`Fila ${i+1}: estado no válido.`);
     if(Number.isNaN(Date.parse(r.date+'T12:00:00Z'))||new Date(r.date+'T12:00:00Z').toISOString().slice(0,10)!==r.date)throw new Error(`Fila ${i+1}: fecha no válida.`);
-    return {...r,activity,outcome:r.outcome??'unknown',inferred:!!r.inferred};
+    const outcome=r.outcome??'unknown',record_kind=r.record_kind??(outcome==='unknown'?'plan':'execution');
+    if(!['plan','revision','execution'].includes(record_kind)||(record_kind!=='execution'&&outcome!=='unknown')||(record_kind==='execution'&&outcome==='unknown'))throw new Error(`Fila ${i+1}: planificación y ejecución no son compatibles.`);
+    if(r.time&&!/^([01]\d|2[0-3]):[0-5]\d(?::[0-5]\d)?$/.test(r.time))throw new Error(`Fila ${i+1}: hora no válida.`);
+    if(r.revision_keys&&(!Array.isArray(r.revision_keys)||r.revision_keys.some(k=>typeof k!=='string'||!k)))throw new Error(`Fila ${i+1}: referencias de cambios no válidas.`);
+    return {...r,activity,record_kind,outcome,inferred:!!r.inferred,source_system:r.source_system||'WhatsApp',revision_keys:r.revision_keys||[]};
   });
 }

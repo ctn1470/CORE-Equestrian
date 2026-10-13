@@ -7,7 +7,7 @@ Web app móvil para Agenda → Ejecución → Historial, directorio/ficha del ca
 - La app local está conectada al proyecto Supabase de CORE. Al vaciar public/config.js se activa la demostración en memoria, claramente identificada y sin persistencia.
 - El código del piloto está guardado en https://github.com/ctn1470/CORE-Equestrian, independiente de Mercado Casa. El cliente de Supabase y la migración están escritos; el proyecto Supabase nuevo CORE-Equestrian está creado (crcriztfrcgzoxikeqbs), con el esquema instalado.
 - La migración y la suite SQL de aislamiento se ejecutaron correctamente en el proyecto nuevo. Las 10 tablas tienen RLS; ninguna función privilegiada está en el esquema público. Login y persistencia de usuarios reales siguen pendientes.
-- Los 1.605 registros depurados y el modelo original no están disponibles en los archivos del proyecto ni como adjuntos en la conversación recuperada. El importador está preparado; no se inventaron ni importaron registros de WhatsApp.
+- Se recuperaron la base maestra normalizada, el WhatsApp actualizado y el seguimiento exclusivo de Cristina. La consolidación y los JSON de importación se entregan fuera del repositorio para conservar su privacidad. Consulta HISTORY_IMPORT.md para el contrato y la validación.
 - El sitio anterior permanece intacto. `sources/` permanece como referencia de solo lectura.
 
 ## Ejecutar
@@ -69,7 +69,7 @@ La administración de miembros y asignaciones se realiza en Supabase durante el 
 
 ## Histórico
 
-El importador acepta un JSON normalizado de exactamente 1.605 registros y hace una importación transaccional. Debe vincular primero los nombres de los archivos originales con los IDs reales de caballos/personas de MA Dressage. Ejemplo de estructura, NO un registro real:
+El importador acepta de 1 a 5.000 registros por transacción, como paquete CORE con nombres o como arreglo JSON normalizado con IDs. Debe vincular primero los nombres de los archivos originales con los IDs reales de caballos/personas de MA Dressage. Ejemplo de estructura, NO un registro real:
 
 ```json
 [{
